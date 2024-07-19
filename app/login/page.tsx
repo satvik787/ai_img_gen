@@ -3,7 +3,9 @@ import {auth, googleProvider} from "@/firebase/config"
 import { signInWithPopup} from "firebase/auth";
 import "./login.css";
 import { useRouter } from 'next/navigation'
-import {ArrowLeft} from "lucide-react";
+import {ArrowLeft, CircleAlert} from "lucide-react";
+import {createSession} from "@/action/session";
+import {toast} from "sonner";
 
 export default function Login() {
     const router = useRouter();
@@ -11,12 +13,15 @@ export default function Login() {
         try {
             const res = await signInWithPopup(auth, googleProvider);
             if(res.user) {
-                router.replace("/");
+                await createSession(res.user.uid);
             }else{
                 console.log("FAILED TO LOGIN");
             }
         } catch (error) {
-            console.log(error);
+            // @ts-ignore
+            toast(<span> <CircleAlert/> {error.message}</span>, {
+                className: "bg-red-500 text-white border-none shadow-lg"
+            });
         }
     };
     function handleBackClick(){

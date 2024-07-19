@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      screens:{
+        sm:"400px"
+      },
       opacity:{
         '2':'0.02'
       },

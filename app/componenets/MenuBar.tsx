@@ -17,7 +17,7 @@ function MenuLink({children,to}:MeniLinkProps){
 
 export default function MenuBar({children,className}:{children:ReactNode,className?:string}) {
     return (
-        <div className={"flex row-start-1 row-end-2 bg-Secondary rounded-md mx-2 justify-between items-center px-4" + className} >
+        <div className={"flex row-start-1 row-end-2 bg-Secondary rounded-md mx-2 items-center px-4" + className} >
             {children}
         </div>
 

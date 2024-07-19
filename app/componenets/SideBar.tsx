@@ -1,5 +1,5 @@
 import {ReactNode} from 'react';
-import {Brain } from "lucide-react"
+import {Bot, Brain, Folder, Search} from "lucide-react"
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/app/componenets/ui/card";
 import Link from "next/link";
 import UserBox from "@/app/componenets/UserBox";
@@ -18,18 +18,26 @@ function MenuLink({children,to}: MeniLinkProps){
         </Link>
     )
 }
-export default function SideBar({children}:{children:ReactNode}) {
+export default function SideBar() {
     return (
         <div className={"h-full col-start-1 col-end-2 box-border "}>
             <Card className={"h-full border-secondary bg-Secondary flex flex-col justify-between"}>
                 <div>
                     <CardHeader>
                         <CardTitle className={"text-purple-200"}>
-                            <Brain/>Gen AI
+                            <Brain /><span className={"sm:max-[700px]:hidden"}>Gen AI</span>
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {children}
+                        <MenuLink to={"/"}>
+                            <Search className={"min-w-6"}/> <span className={"sm:max-[1000px]:hidden  sm:max-[1200px]:text-xs sm:max-[1200px]:pt-1"}>Explore</span>
+                        </MenuLink>
+                        <MenuLink to={"/create"}>
+                            <Bot className={"min-w-6"}/><span className={"sm:max-[1000px]:hidden  sm:max-[1200px]:text-xs sm:max-[1200px]:pt-1"}>Generate</span>
+                        </MenuLink>
+                        <MenuLink to={"/profile"}>
+                        <Folder className={"min-w-6"}/> <span className={"sm:max-[1000px]:hidden sm:max-[1200px]:text-xs sm:max-[1200px]:pt-1"}>My Creations</span>
+                        </MenuLink>
                     </CardContent>
                 </div>
                 <CardFooter>
@@ -39,5 +47,4 @@ export default function SideBar({children}:{children:ReactNode}) {
         </div>
     );
 }
-SideBar.Link = MenuLink;
 
