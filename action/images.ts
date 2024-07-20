@@ -21,8 +21,9 @@ export interface Res<T>{
 export async function getImages(query:string):Promise<Res<Array<string>>> {
     const exist = query !== undefined && mp.has(query);
     query = !exist ? "genImgs":query;
+    const filePath = path.join(process.cwd(), 'public', query);
     return new Promise((resolve,reject)=>{
-        fs.readdir("./public/"+query,(err,files)=>{
+        fs.readdir(filePath,(err,files)=>{
             if(err){
                 reject({ok:false,msg:err.message});
             }else{

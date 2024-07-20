@@ -1,7 +1,7 @@
 "use client";
 import {Gallery} from "react-grid-gallery";
 import { MouseEvent, useEffect, useRef, useState} from "react";
-import {ArrowLeft, Eraser, Pencil} from "lucide-react";
+import {ArrowLeft, Eraser} from "lucide-react";
 
 interface ImgViewProps{
     fileNames:Array<string>;
@@ -49,8 +49,8 @@ export default function ImgView({fileNames,edit=false}:ImgViewProps) {
     const [erase,setErase] = useState<boolean>(false);
     const canvasElement = useRef<HTMLCanvasElement>(null);
     const clickedImage = useRef<HTMLImageElement>();
-    const [color, setColor] = useState<string>("black");
     const outerDiv = useRef<HTMLDivElement>(null);
+
     useEffect(()=>{
         if(edit && canvasElement.current && clickedImage.current && outerDiv.current) {
             canvasElement.current.width = outerDiv.current.clientWidth;
@@ -62,7 +62,7 @@ export default function ImgView({fileNames,edit=false}:ImgViewProps) {
                 canvasElement.current.onmousemove = (ev)=>{
                     const x = ev.offsetX,y = ev.offsetY;
                     ctx.beginPath();
-                    ctx.fillStyle = color;
+                    ctx.fillStyle = "white";
                     ctx.arc(x,y,5,0,Math.PI * 2,false);
                     ctx.fill();
                 }
@@ -72,11 +72,13 @@ export default function ImgView({fileNames,edit=false}:ImgViewProps) {
                 canvasElement.current.onmousemove = null;
             }
         }
-    },[clickedIndex,erase,edit,color]);
+    },[clickedIndex,erase,edit]);
 
     function handleClick(index:number,item:any,e:MouseEvent<HTMLElement>){
-        setClickedIndex(index);
-        clickedImage.current = e.target as HTMLImageElement;
+        if(edit){
+            setClickedIndex(index);
+            clickedImage.current = e.target as HTMLImageElement;
+        }
     }
 
     function handleBackClick(){
@@ -94,6 +96,7 @@ export default function ImgView({fileNames,edit=false}:ImgViewProps) {
             height: img.height === 0? 200 : img.height,
         };
     })
+
     return (
         <div className={"w-full h-full relative row-start-2 row-end-3 overflow-scroll bg-Secondary p-4 rounded-lg"}>
             {
@@ -112,16 +115,6 @@ export default function ImgView({fileNames,edit=false}:ImgViewProps) {
                         onClick={() => setErase((prevState => !prevState))}
                         className={"w-8 h-8 z-10 right-8 top-6 flex items-center justify-center absolute bg-purple-100 rounded-full"}>
                         <Eraser/>
-                    </button>
-                    <button
-                        onClick={() => setColor("purple")}
-                        className={"w-8 h-8 z-10 right-20 top-6 flex items-center justify-center absolute bg-purple-100 rounded-full"}>
-                        <div className={"w-[70%] h-[70%] rounded-full bg-purple-500"}/>
-                    </button>
-                    <button
-                        onClick={() => setColor("black")}
-                        className={"w-8 h-8 z-10 right-32 top-6 flex items-center justify-center absolute bg-purple-100 rounded-full"}>
-                        <div className={"w-[70%] h-[70%] rounded-full bg-black"}/>
                     </button>
                     <canvas ref={canvasElement}></canvas>
                 </div>
