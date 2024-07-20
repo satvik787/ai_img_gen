@@ -5,6 +5,8 @@ import {headers} from "next/headers";
 import {Ratelimit} from "@upstash/ratelimit";
 import {kv} from "@vercel/kv";
 
+
+const mp = new Set(["animals","anime","food","landscapes"]);
 const ratelimit = new Ratelimit({
     redis: kv,
     limiter: Ratelimit.slidingWindow(3, '1 h'),
@@ -17,10 +19,10 @@ export interface Res<T>{
 }
 
 export async function getImages(query:string):Promise<Res<Array<string>>> {
-    const exist = query !== undefined && fs.existsSync(path.join("./public",query),);
+    const exist = query !== undefined && mp.has(query);
     query = !exist ? "genImgs":query;
     return new Promise((resolve,reject)=>{
-        fs.readdir(path.join("./public",query),(err,files)=>{
+        fs.readdir("./public/"+query,(err,files)=>{
             if(err){
                 reject({ok:false,msg:err.message});
             }else{

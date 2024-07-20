@@ -1,5 +1,4 @@
 import SideBar from "@/app/componenets/SideBar";
-import {Bot, Folder, Search} from "lucide-react"
 
 export default function Layout({children}: {children: React.ReactNode}) {
     return (
